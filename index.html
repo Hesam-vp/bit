@@ -107,25 +107,7 @@
          font-size: 1.4rem;
          }
          }
-         .search-container {
-         position: fixed;
-         top: 20px;
-         left: 50%;
-         transform: translateX(-50%);
-         z-index: 1000;
-         width: 80%;
-         max-width: 600px;
-         }
-         #searchInput {
-         width: 100%;
-         padding: 12px 20px;
-         border: 2px solid var(--primary-color);
-         border-radius: 25px;
-         font-family: 'Vazir';
-         direction: rtl;
-         box-shadow: var(--box-shadow);
-         font-size: 16px;
-         }
+        
          .autocomplete-items {
          position: absolute;
          border: 1px solid var(--primary-color);
@@ -225,17 +207,87 @@
          box-shadow: var(--box-shadow);
          border: 2px solid var(--primary-color);
          }
+         .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    padding: 15px 20px;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+    box-shadow: var(--box-shadow);
+    display: flex;
+    justify-content: center;
+    z-index: 1000;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+
+.header-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    justify-content: space-between;
+}
+
+
+.search-container {
+    flex: 1;
+    max-width: 400px;
+    position: relative;
+}
+
+#searchInput {
+    width: 100%;
+    padding: 10px 15px;
+    border: 2px solid var(--primary-color);
+    border-radius: 25px;
+    font-family: 'Vazir';
+    direction: rtl;
+    box-shadow: var(--box-shadow);
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+
+.update-box {
+    background: rgba(61, 113, 164, 0.8);
+    border-radius: 8px;
+    padding: 5px 15px;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
       </style>
    </head>
    <body>
-      <div class="search-container">
-         <input type="text" id="searchInput" placeholder="جستجو کنید...">
-         <div id="autocomplete-list" class="autocomplete-items"></div>
-      </div>
+      <header class="header">
+         <div class="header-content">
+             <div class="update-box">
+                 <p>📅 آخرین بروزرسانی : 1403/12/26</p>
+             </div>
+             <div class="search-container">
+               <input type="text" id="searchInput" placeholder="جستجو کنید...">
+               <div id="autocomplete-list" class="autocomplete-items"></div>
+           </div>
+         </div>
+     </header>
+     
       <div id="toast" class="toast">✅ کپی شد!</div>
-      <div style="background-color: rgb(141, 65, 65); border-radius: 3px; position: fixed; top: 0; right: 0; font-size: small;">
-         <p>آخرین بروزرسانی : 1403/12/26</p>
-      </div>
+     
       <section class="section">
          <h2 class="section-header">👋 معرفی خودم</h2>
          <div class="note-box">
