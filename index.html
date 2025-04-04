@@ -271,6 +271,34 @@
 }
 
 
+.input-field {
+    width: 90%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    font-size: 16px;
+    direction: ltr;
+    text-align: left;
+}
+.ltr-input {
+    direction: ltr;
+    text-align: left;
+}
+.calculate-btn {
+    background: var(--accent-color);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+.calculate-btn:hover {
+    background: #ff9800;
+}
 
       </style>
    </head>
@@ -1455,6 +1483,110 @@
          </div>
       </section>
       <section class="section">
+         <h2 class="section-header">💰 محاسبه کارمزد باز و بسته شدن معامله</h2>
+         <div class="note-box">
+             <p>
+                 در معاملات فیوچرز، هنگام ورود و خروج از یک پوزیشن، کارمزد بر اساس مقدار معامله و قیمت ورود محاسبه می‌شود. فرمول کلی:
+             </p>
+             <p class="highlight">Fee (Open & Close) = Max size * Open Price * Fee Rate</p>
+         </div>
+         
+         <div class="step-list">
+             <div class="step-item">
+                 <h3>📝 مقادیر مورد نیاز را وارد کنید:</h3>
+                 <label for="maxSize">🔹 مقدار معامله (Max Size):</label>
+                 <input type="number" id="maxSize" placeholder="مثلاً 0.1 BTC" class="input-field">
+                 
+                 <label for="openPrice">🔹 قیمت ورود (Open Price):</label>
+                 <input type="number" id="openPrice" placeholder="مثلاً 40000 USDT" class="input-field">
+                 
+                 <label for="feeRate">🔹 نرخ کارمزد (Fee Rate):</label>
+                 <input type="number" id="feeRate" step="0.0001" placeholder="مثلاً 0.0004" class="input-field">
+                 
+                 <button onclick="calculateFee()" class="calculate-btn">📊 محاسبه</button>
+             </div>
+         </div>
+         
+         <div class="highlight-box" id="resultBox" style="display:none;">
+             <h3>🔍 نتیجه محاسبه:</h3>
+             <p id="calculationText"></p>
+             <p id="resultText"></p>
+             <button onclick="copyResult()" class="copy-btn">📋 کپی نتیجه</button>
+         </div>
+     </section>
+
+     <section class="section">
+      <h2 class="section-header">📉 محاسبه نقطه لیکویید</h2>
+      <div class="note-box">
+          <p>
+              در معاملات فیوچرز، نقطه لیکویید شدن بر اساس میانگین قیمت ورود، حاشیه موجود و اندازه پوزیشن محاسبه می‌شود.
+          </p>
+      </div>
+      
+      <div class="step-list">
+          <div class="step-item">
+              <h3>📝 مقادیر مورد نیاز را وارد کنید:</h3>
+              <label for="avgOpenPrice">🔹 میانگین قیمت ورود (AVG Open Price):</label>
+              <input type="number" id="avgOpenPrice" placeholder="مثلاً 40000 USDT" class="input-field">
+              
+              <label for="positionSize">🔹 اندازه پوزیشن (Position Size):</label>
+              <input type="number" id="positionSize" placeholder="مثلاً 0.1 BTC" class="input-field">
+              
+              <label for="leverage">🔹 لوریج (Leverage):</label>
+              <input type="number" id="leverage" placeholder="مثلاً 10" class="input-field">
+              
+              <label for="mmr">🔹 حداقل مارجین نگهداری (MMR %):</label>
+              <input type="number" id="mmr" step="0.01" placeholder="مثلاً 0.005" class="input-field">
+              
+              <button onclick="calculateLiquidation('long')" class="calculate-btn">📊 محاسبه لیکویید لانگ</button>
+              <button onclick="calculateLiquidation('short')" class="calculate-btn">📊 محاسبه لیکویید شورت</button>
+          </div>
+      </div>
+      
+      <div class="highlight-box" id="liqResultBox" style="display:none;">
+          <h3>🔍 نتیجه محاسبه:</h3>
+          <p id="liqCalculationText"></p>
+          <p id="liqResultText"></p>
+          <button onclick="copyLiqResult()" class="copy-btn">📋 کپی نتیجه</button>
+      </div>
+  </section>
+
+  <section class="section">
+   <h2 class="section-header">💸 محاسبه کارمزد تأمین مالی (Funding Fee)</h2>
+   <div class="note-box">
+       <p>
+           در معاملات فیوچرز، کارمزد تأمین مالی بر اساس ارزش پوزیشن و نرخ تأمین مالی محاسبه می‌شود. فرمول کلی:
+       </p>
+       <p class="highlight">Funding Fee = Position Value × Funding Rate</p>
+       <p class="highlight">Position Value = Quantity of Contract / Mark Price</p>
+   </div>
+   
+   <div class="step-list">
+       <div class="step-item">
+           <h3>📝 مقادیر مورد نیاز را وارد کنید:</h3>
+           <label for="quantity">🔹 تعداد قرارداد (Quantity of Contract):</label>
+           <input type="number" id="quantity" placeholder="مثلاً 1000" class="input-field">
+           
+           <label for="markPrice">🔹 قیمت مارک (Mark Price):</label>
+           <input type="number" id="markPrice" placeholder="مثلاً 45000 USDT" class="input-field">
+           
+           <label for="fundingRate">🔹 نرخ تأمین مالی (Funding Rate):</label>
+           <input type="number" id="fundingRate" step="0.0001" placeholder="مثلاً 0.0002" class="input-field">
+           
+           <button onclick="calculateFundingFee()" class="calculate-btn">📊 محاسبه</button>
+       </div>
+   </div>
+   
+   <div class="highlight-box" id="fundingResultBox" style="display:none;">
+       <h3>🔍 نتیجه محاسبه:</h3>
+       <p id="fundingCalculationText"></p>
+       <p id="fundingResultText"></p>
+       <button onclick="copyFundingResult()" class="copy-btn">📋 کپی نتیجه</button>
+   </div>
+</section>
+
+
+      <section class="section">
          <h2 class="section-header">📩  ارجاع به هلپ دسک و دریافت ایمیل  </h2>
          <div class="note-box">
             <p>⚠️ اگر بررسی مشکل یک کاربر بیش از <b>۱۰ دقیقه</b> زمان نیاز داشته باشد و هنوز پاسخی از تیم فنی دریافت نشده باشد، باید ایمیل کاربر را دریافت کرده و او را مطلع کنیم که پاسخ از طریق ایمیل ارسال خواهد شد.</p>
@@ -1682,6 +1814,72 @@
       setTimeout(() => toast.classList.remove("show"), 2000);
       });
       }
+
+      function calculateFee() {
+        const maxSize = parseFloat(document.getElementById('maxSize').value);
+        const openPrice = parseFloat(document.getElementById('openPrice').value);
+        const feeRate = parseFloat(document.getElementById('feeRate').value);
+        
+        if (isNaN(maxSize) || isNaN(openPrice) || isNaN(feeRate)) {
+            alert('لطفاً تمام مقادیر را به درستی وارد کنید.');
+            return;
+        }
+        
+        const result = maxSize * openPrice * feeRate;
+        document.getElementById('calculationText').innerText = `📌 محاسبه: ${maxSize} * ${openPrice} * ${feeRate} = ${result.toFixed(6)}`;
+        document.getElementById('resultText').innerText = `💰 مجموع کارمزد ورود و خروج: ${result.toFixed(6)} USDT`;
+        document.getElementById('resultBox').style.display = 'block';
+    }
+
+    function calculateLiquidation(type) {
+        const avgOpenPrice = parseFloat(document.getElementById('avgOpenPrice').value);
+        const positionSize = parseFloat(document.getElementById('positionSize').value);
+        const leverage = parseFloat(document.getElementById('leverage').value);
+        const mmr = parseFloat(document.getElementById('mmr').value);
+        
+        if (isNaN(avgOpenPrice) || isNaN(positionSize) || isNaN(leverage) || isNaN(mmr)) {
+            alert('لطفاً تمام مقادیر را به درستی وارد کنید.');
+            return;
+        }
+        
+        const availableMargin = (avgOpenPrice * positionSize) / leverage;
+        const formulaPart = (availableMargin - (positionSize * mmr * avgOpenPrice)) / positionSize;
+        const liquidationPrice = type === 'long' ? avgOpenPrice - formulaPart : avgOpenPrice + formulaPart;
+        
+        document.getElementById('liqCalculationText').innerText = `📌 محاسبه: ${avgOpenPrice} ${type === 'long' ? '-' : '+'} ((${availableMargin} - (${positionSize} * ${mmr} * ${avgOpenPrice})) / ${positionSize}) = ${liquidationPrice.toFixed(2)}`;
+        document.getElementById('liqResultText').innerText = `⚠️ نقطه لیکویید (${type === 'long' ? 'لانگ' : 'شورت'}): ${liquidationPrice.toFixed(2)} USDT`;
+        document.getElementById('liqResultBox').style.display = 'block';
+    }
+
+    function copyLiqResult() {
+        const resultText = document.getElementById('liqCalculationText').innerText + "\n" + document.getElementById('liqResultText').innerText;
+        navigator.clipboard.writeText(resultText);
+        alert('نتیجه محاسبه کپی شد!');
+    }
+
+    function calculateFundingFee() {
+        const quantity = parseFloat(document.getElementById('quantity').value);
+        const markPrice = parseFloat(document.getElementById('markPrice').value);
+        const fundingRate = parseFloat(document.getElementById('fundingRate').value);
+        
+        if (isNaN(quantity) || isNaN(markPrice) || isNaN(fundingRate)) {
+            alert('لطفاً تمام مقادیر را به درستی وارد کنید.');
+            return;
+        }
+        
+        const positionValue = quantity / markPrice;
+        const fundingFee = positionValue * fundingRate;
+        
+        document.getElementById('fundingCalculationText').innerText = `📌 محاسبه: (${quantity} / ${markPrice}) × ${fundingRate} = ${fundingFee.toFixed(6)}`;
+        document.getElementById('fundingResultText').innerText = `💸 کارمزد تأمین مالی: ${fundingFee.toFixed(6)} USDT`;
+        document.getElementById('fundingResultBox').style.display = 'block';
+    }
+    
+    function copyFundingResult() {
+        const resultText = document.getElementById('fundingCalculationText').innerText + "\n" + document.getElementById('fundingResultText').innerText;
+        navigator.clipboard.writeText(resultText);
+        alert('نتیجه محاسبه کپی شد!');
+    }
       
       document.addEventListener("DOMContentLoaded", addCopyButtons);
    </script>
